@@ -15,7 +15,7 @@
         "LICENSE*",
         "*.MD",
         "Makefile",
-        "build_deps.sh",
+        "boringssl.mk",
         "rebar.config",
         "rebar.lock",
         "include/*.hrl",

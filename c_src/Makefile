@@ -3,15 +3,8 @@ PROJECT_NIF_NAME=erltls_nif
 
 include nif.mk
 
-ifeq ($(USE_BORINGSSL), 1)
-	CXXFLAGS += -I$(BASEDIR)/deps/boringssl/include
-	LDFLAGS  += -L$(BASEDIR)/deps/boringssl/lib
-else
-	ifeq ($(UNAME_SYS), darwin)
-		CXXFLAGS += -I/usr/local/opt/openssl/include
-		LDFLAGS  += -L/usr/local/opt/openssl/lib
-	endif
-endif
+CXXFLAGS += -I$(REBAR_DEPS_DIR)/boringssl/include
+LDFLAGS  += -L$(REBAR_DEPS_DIR)/boringssl/lib
 
 CXXFLAGS += -DNDEBUG \
 			-g -Wextra -Werror -Wno-missing-field-initializers -fno-exceptions -fno-rtti -std=c++11
@@ -47,4 +40,4 @@ ifeq ($(UNAME_SYS), darwin)
 				-Wl,-U,_enif_make_list_from_array
 endif
 
-LDFLAGS += -lssl -lcrypto -lstdc++
+LDFLAGS += -Wl,--strip-all -pthread -lssl -lcrypto

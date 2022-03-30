@@ -4,6 +4,8 @@ ROOT_TEST=_build/test/lib
 C_SRC_DIR = $(shell pwd)/c_src
 C_SRC_ENV ?= $(C_SRC_DIR)/env.mk
 
+REBAR_DEPS_DIR ?= $(CURDIR)/_build/default/lib
+
 #regenerate all the time the env.mk
 ifneq ($(wildcard $(C_SRC_DIR)),)
 	GEN_ENV ?= $(shell erl -noshell -s init stop -eval "file:write_file(\"$(C_SRC_ENV)\", \
@@ -20,22 +22,18 @@ endif
 
 include $(C_SRC_ENV)
 
-ifndef USE_BORINGSSL
-    USE_BORINGSSL = 1
-endif
+include boringssl.mk
 
-get_deps:
-	@./build_deps.sh
+$(REBAR_DEPS_DIR)/boringssl/lib/:
+	mkdir $(REBAR_DEPS_DIR)/boringssl/lib
 
-ifeq ($(USE_BORINGSSL), 1)
-compile_nif: get_deps
-endif
-
-compile_nif:
-	@make V=0 -C c_src -j 8 USE_BORINGSSL=$(USE_BORINGSSL)
+compile_nif: boringssl $(REBAR_DEPS_DIR)/boringssl/lib/
+	cp $(REBAR_DEPS_DIR)/boringssl/build/crypto/libcrypto.a $(REBAR_DEPS_DIR)/boringssl/build/ssl/libssl.a \
+		$(REBAR_DEPS_DIR)/boringssl/lib/
+	$(MAKE) V=0 -C c_src
 
 clean_nif:
-	@make -C c_src clean
+	$(MAKE) -C c_src clean
 
 compile:
 	${REBAR} compile

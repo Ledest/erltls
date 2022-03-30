@@ -1,6 +1,14 @@
-{"1.1.0",
-[{<<"ranch">>,{pkg,<<"ranch">>,<<"1.7.1">>},0}]}.
+{"1.2.0",
+[{<<"boringssl">>,
+  {raw,"https://boringssl.googlesource.com/boringssl.git",
+       {mod_ref,git,
+                {ref,"3a667d10e94186fd503966f5638e134fe9fb4080"},
+                [{description,"BoringSSL"}]}},
+  0},
+ {<<"ranch">>,{pkg,<<"ranch">>,<<"1.7.1">>},0}]}.
 [
 {pkg_hash,[
- {<<"ranch">>, <<"6B1FAB51B49196860B733A49C07604465A47BDB78AA10C1C16A3D199F7F8C881">>}]}
+ {<<"ranch">>, <<"6B1FAB51B49196860B733A49C07604465A47BDB78AA10C1C16A3D199F7F8C881">>}]},
+{pkg_hash_ext,[
+ {<<"ranch">>, <<"451D8527787DF716D99DC36162FCA05934915DB0B6141BBDAC2EA8D3C7AFC7D7">>}]}
 ].
